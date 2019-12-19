@@ -60,6 +60,8 @@ public class Sales extends Form implements HandlesEventDispatching {
         Label_Username.WidthPercent(35);
         Label_Username.FontSize(14);
 
+        //perm
+
         Username = new Label(Horizon1);
         Username.WidthPercent(45);
         Username.FontSize(14);
