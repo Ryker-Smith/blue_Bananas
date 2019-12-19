@@ -1,6 +1,5 @@
 package net.fachtnaroe.blue_bananas;
 
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
@@ -16,6 +15,12 @@ import com.google.appinventor.components.runtime.ListView;
 import com.google.appinventor.components.runtime.VerticalArrangement;
 import com.google.appinventor.components.runtime.Web;
 import com.google.appinventor.components.runtime.Notifier;
+import com.google.appinventor.components.runtime.util.YailList;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,105 +28,117 @@ import java.util.List;
 
 public class Sales extends Form implements HandlesEventDispatching {
     private Button butt1, btnDelete, btnAddNew, btnOrderIsCompleted;
-    private VerticalArrangement Vertical, Vertical1, Vertical2;
+    private VerticalArrangement Vertical1, Vertical2;
     private HorizontalArrangement Horizon1, Horizon2btn;
     private Label title, Label_Username, Username, pIDLabel, NumberID, ThingsSale, thingsSold_Label, empty1, empty2, empty3;
     private ListView thingsWeSell, thingsSold;
-    private String baseURL = "https://fachtnaroe.net/bananas?", TheUsername = MainActivity.getUsername(), pID = MainActivity.getPID(), SessionID = MainActivity.getSessionID(), URLsesh = "sessionID=", URLthings4sale = "&entity=thing&method=GET", URLThingsSold = "&entity=orders2&method=GET&sellerID=",  webThingDeletURL = "&entity=thing&method=DELETE&tID=", webOrderIsCompleteURL= "entity=orders&method=DELETE&oID=";
+    private String baseURL = "https://fachtnaroe.net/bananas?", TheUsername = MainActivity.getUsername(), pID = MainActivity.getPID(), SessionID = MainActivity.getSessionID(), URLsesh = "sessionID=", URLthings4sale = "&entity=thing&method=GET", URLThingsSold = "&entity=orders&method=GET", webThingDeletURL = "&entity=thing&method=DELETE&tID=", webOrderIsCompleteURL = "&entity=orders&method=DELETE&oID=";
     private Web webGetThings4Sale, webThingsSold, webThingDelete, webThingOrderIsComplete;
     private Notifier GotTextNotifier;
 
 
     protected void $define() {
 
+        BackgroundImage("FDS_PossibleLogo_03.png");
         this.BackgroundColor(COLOR_ORANGE);
-        String startupValue=this.startupValue;
-        String[] temp=startupValue.split("::");
-        pID=temp[0];
-        pID=pID.replaceAll("\"","");
-        SessionID=temp[1];
-        GotTextNotifier = new Notifier(this);
-        Vertical = new VerticalArrangement(this);
-        Vertical.HeightPercent(Component.LENGTH_FILL_PARENT);
-        Vertical.Image("FDS_PossibleLogo_04.png");
 
-        title = new Label(Vertical);
+        GotTextNotifier = new Notifier(this);
+        GotTextNotifier.BackgroundColor(Component.COLOR_RED);
+        GotTextNotifier.TextColor(Component.COLOR_WHITE);
+
+        title = new Label(this);
         title.Text("Food Delivery Service");
-        title.FontSize(20);
+        title.FontSize(36);
         title.Width(Component.LENGTH_FILL_PARENT);
         title.TextAlignment(Component.ALIGNMENT_CENTER);
         title.BackgroundColor(Color.parseColor("#005200"));
         title.TextColor(COLOR_WHITE);
 
-        Horizon1 = new HorizontalArrangement(Vertical);
+        Horizon1 = new HorizontalArrangement(this);
         Horizon1.WidthPercent(Component.LENGTH_FILL_PARENT);
         Label_Username = new Label(Horizon1);
         Label_Username.Text("Username:");
-        Label_Username.WidthPercent(35);
+        Label_Username.WidthPercent(30);
         Label_Username.FontSize(14);
 
+
         Username = new Label(Horizon1);
-        Username.WidthPercent(45);
+        Username.WidthPercent(30);
         Username.FontSize(14);
         Username.TextColor(COLOR_BLUE);
         Username.Text(TheUsername);
 
+        empty1 = new Label(Horizon1);
+        empty1.Text("Helloo");
+        empty1.TextAlignment(Component.ALIGNMENT_NORMAL);
+        empty1.FontSize(20);
+        empty1.TextColor(COLOR_NONE);
+        empty1.WidthPercent(30);
+
         pIDLabel = new Label(Horizon1);
         pIDLabel.Text("pID:");
-        pIDLabel.FontSize(14);
         pIDLabel.WidthPercent(10);
+        pIDLabel.FontSize(14);
 
         NumberID = new Label(Horizon1);
-        NumberID.Text(pID);
+        NumberID.Text("16");
         NumberID.TextColor(Component.COLOR_BLUE);
-        NumberID.WidthPercent(5);
+        NumberID.WidthPercent(10);
         NumberID.FontSize(14);
 
-        ThingsSale = new Label(Vertical);
-        ThingsSale.Text("My things for sale");
+        ThingsSale = new Label(this);
+        ThingsSale.Text("Things available to order");
         ThingsSale.FontSize(14);
         ThingsSale.BackgroundColor(Color.parseColor("#005200"));
         ThingsSale.TextColor(Component.COLOR_WHITE);
         ThingsSale.Width(Component.LENGTH_FILL_PARENT);
 
-        Vertical1 = new VerticalArrangement(Vertical);
-        Vertical1.HeightPercent(25);
+        Vertical1 = new VerticalArrangement(this);
+        Vertical1.Height(200);
         thingsWeSell = new ListView(Vertical1);
         thingsWeSell.Height(Component.LENGTH_FILL_PARENT);
-        thingsWeSell.TextSize(40);
-        thingsWeSell.TextColor(COLOR_BLACK);
+        thingsWeSell.TextSize(18);
         thingsWeSell.BackgroundColor(Color.parseColor("#00000000"));
 
-        Horizon2btn = new HorizontalArrangement(Vertical);
+        Horizon2btn = new HorizontalArrangement(this);
         Horizon2btn.WidthPercent(Component.LENGTH_FILL_PARENT);
-
         btnDelete = new Button(Horizon2btn);
         btnDelete.Text("Delete");
-        btnDelete.WidthPercent(50);
+        btnDelete.BackgroundColor(Color.parseColor("#00000000"));
+        btnDelete.Width(Component.LENGTH_FILL_PARENT);
         btnDelete.FontSize(12);
+
+        empty2 = new Label(Horizon2btn);
+        empty2.Text("Amount");
+        empty2.TextAlignment(Component.ALIGNMENT_NORMAL);
+        empty2.FontSize(20);
+        empty2.TextColor(COLOR_WHITE);
+        empty2.WidthPercent(60);
 
         btnAddNew = new Button(Horizon2btn);
         btnAddNew.Text("Add New");
-        btnAddNew.WidthPercent(50);
+        btnAddNew.Width(Component.LENGTH_FILL_PARENT);
+        btnAddNew.BackgroundColor(Color.parseColor("#00000000"));
         btnAddNew.FontSize(12);
+        btnAddNew.Width(Component.LENGTH_FILL_PARENT);
 
-        thingsSold_Label = new Label(Vertical);
-        thingsSold_Label.Text("My things sold");
+        thingsSold_Label = new Label(this);
+        thingsSold_Label.Text("My things Sold");
         thingsSold_Label.Width(Component.LENGTH_FILL_PARENT);
         thingsSold_Label.BackgroundColor(Color.parseColor("#005200"));
         thingsSold_Label.FontSize(12);
         thingsSold_Label.TextColor(COLOR_WHITE);
 
-        Vertical2 = new VerticalArrangement(Vertical);
-        Vertical2.HeightPercent(20);
+        Vertical2 = new VerticalArrangement(this);
+        Vertical2.Height(150);
         thingsSold = new ListView(Vertical2);
         thingsSold.Height(Component.LENGTH_FILL_PARENT);
-        thingsSold.TextSize(40);
-        thingsSold.TextColor(Component.COLOR_BLACK);
+        thingsSold.TextSize(18);
         thingsSold.BackgroundColor(Color.parseColor("#00000000"));
 
-        btnOrderIsCompleted = new Button(Vertical);
+        btnOrderIsCompleted = new Button(this);
         btnOrderIsCompleted.Width(Component.LENGTH_FILL_PARENT);
+        btnOrderIsCompleted.BackgroundColor(Color.parseColor("#00000000"));
         btnOrderIsCompleted.Text("Order is completed");
         btnOrderIsCompleted.FontSize(12);
 
@@ -137,13 +154,14 @@ public class Sales extends Form implements HandlesEventDispatching {
         webThingDelete.Url(baseURL + URLsesh + "a1b2c3d4" + URLthings4sale + webThingDeletURL);
         webThingDelete.Get();
 
-        webThingOrderIsComplete  = new Web(this);
-        webThingOrderIsComplete.Url(baseURL + URLsesh + "a1b2c3d4" + webOrderIsCompleteURL);
+        webThingOrderIsComplete = new Web(this);
+        webThingOrderIsComplete.Url(baseURL + URLsesh + "a1b2c3d4" + URLThingsSold + webOrderIsCompleteURL);
         webThingOrderIsComplete.Get();
 
-        butt1 = new Button(Vertical);
+        butt1 = new Button(this);
         butt1.Text("Go Back");
         butt1.FontSize(12);
+        butt1.BackgroundColor(Color.parseColor("#00000000"));
         butt1.Width(Component.LENGTH_FILL_PARENT);
         butt1.Height(Component.LENGTH_FILL_PARENT);
 
@@ -157,28 +175,35 @@ public class Sales extends Form implements HandlesEventDispatching {
                 mainActGo();
                 return true;
             }
-            else if (component.equals(btnAddNew)) {
+            if (component.equals(btnAddNew)) {
                 switchForm("AddNamesOfItems");
             }
-            else if (component.equals(btnDelete)) {
+            if (component.equals(btnDelete)) {
                 ThingsSale.Text(ThingsSale.Text() + " >");
                 deletThis(thingsWeSell.Selection());
                 return true;
             }
-            else if (component.equals(btnOrderIsCompleted)) {
-                Log.d("INFO:~~>", "A");
+            if (component.equals(btnOrderIsCompleted)) {
                 thingsSold_Label.Text(thingsSold_Label.Text() + " >");
                 removeCompletedOrder(thingsSold.Selection());
-                Log.d("INFO:~~>", "B");
                 return true;
             }
         }
-        else if (eventName.equals("GotText")) {
+        if (eventName.equals("GotText")) {
             if (component.equals(webGetThings4Sale)) {
-                sortJson4GetThings4Sale((String) params[3], "16");
+                jsonSortAndListViewForSellerScreen(params[1].toString(), (String) params[3], "thing", "tSoldBy");
+                return true;
             }
-            else if (component.equals(webThingsSold)) {
-                sortJson4GetThingsSold((String) params[3]);
+
+            if (component.equals(webThingsSold)) {
+                jsonSortAndListViewForSellerScreen(params[1].toString(), (String) params[3], "orders", "sellerID");
+                return true;
+            }
+            if (component.equals(webThingDelete)) {
+                webGetThings4Sale.Get();
+            }
+            if (component.equals(webThingOrderIsComplete)) {
+                webThingsSold.Get();
             }
         }
         return false;
@@ -188,30 +213,35 @@ public class Sales extends Form implements HandlesEventDispatching {
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
     }
-    public void deletThis(String selection){
-        if((thingsWeSell.Selection().isEmpty())) {
+
+    public void deletThis(String selection) {
+        Log.d("INFO:~~>", "C");
+        if ((thingsWeSell.Selection().isEmpty())) {
             GotTextNotifier.ShowAlert("No Item Selected");
-        }
-        else {
+            Log.d("INFO:~~>", "D");
+        } else {
+            Log.d("INFO:~~>", "E");
             String tIDForURL = selection.substring(1, 3);
-            webThingDelete.Url(webThingDeletURL+tIDForURL);
+            webThingDelete.Url(baseURL + URLsesh + "a1b2c3d4" + webThingDeletURL + tIDForURL);
             webThingDelete.Get();
+            GotTextNotifier.ShowAlert("Thing " + tIDForURL + " removed");
+            finish();
+            startActivity(getIntent());
+            Log.d("INFO:~~>", "F");
         }
     }
+
     public void removeCompletedOrder(String selection) {
         Log.d("INFO:~~>", "C");
         if ((thingsSold.Selection().isEmpty())) {
             GotTextNotifier.ShowAlert("No Order Selected");
             Log.d("INFO:~~>", "D");
-        }
-        else {
+        } else {
             Log.d("INFO:~~>", "E");
-            String[] bits=selection.split("]");
-            String orderNum=bits[0].replace("[","");
-            String oIDForURL = selection.substring(1, 4);
-            webThingOrderIsComplete.Url(baseURL + webOrderIsCompleteURL + orderNum);
+            String[] bits = selection.split("]");
+            String orderNum = bits[0].replace("[", "");
+            webThingOrderIsComplete.Url(baseURL + URLsesh + "a1b2c3d4" + webOrderIsCompleteURL + orderNum);
             webThingOrderIsComplete.Get();
-            btnOrderIsCompleted.Text(webThingOrderIsComplete.Url());
             GotTextNotifier.ShowAlert("Order " + orderNum + " removed");
             Log.d("INFO:~~>", "F");
             //webGetThingsSold.Get();
@@ -219,100 +249,49 @@ public class Sales extends Form implements HandlesEventDispatching {
         }
     }
 
-    public void sortJson4GetThings4Sale(String jsonString, String pID) {
-        // for loop to sort by pID
-        String Temp1 = "";
-        //Used https://stackoverflow.com/questions/48449004/java-storing-the-output-of-a-for-loop-into-an-array/48449039 and https://www.w3schools.com/java/java_ref_string.asp
-        List<String> jsonIsMySon = new ArrayList<String>();
-        char start = '{';
-        char finish = '}';
-        int e = 0;
-        for (int i = 0; i < jsonString.length(); i++) {
-            char thisChar = jsonString.charAt(i);
-            if (thisChar == start) {
+    public void jsonSortAndListViewForSellerScreen(String status, String textOfResponse, String tableName, String fieldName) {
 
-                e = i + 1;
-            } else if ((thisChar == finish)) {
-                String Temp2 = jsonString.substring(e, i);
-                ;
-                if (!(Temp2.contains("]"))) {
-                    if (Temp2.contains("tSoldBy\":\"" + pID)) {
-                        jsonIsMySon.add(Temp2);
+        List<String> ListViewItemArray;
+        if (status.equals("200")) try {
+            ListViewItemArray = new ArrayList<String>();
+            // See:  https://stackoverflow.com/questions/5015844/parsing-json-object-in-java
+            JSONObject parser = new JSONObject(textOfResponse);
+            if (!parser.getString(tableName).equals("")) {
+                JSONArray jsonIsMySon = parser.getJSONArray(tableName);
+                for (int i = 0; i < jsonIsMySon.length(); i++) {
+                    if (Integer.valueOf(jsonIsMySon.getJSONObject(i).getString(fieldName)).equals(Integer.valueOf("16"))) {
+                        String oneEntryInTheListView = "";
+                        //add data from table to the sting above by getting the field name you want from the brief ( example where field name is "sellerID": oneEntryInTheListView = jsonIsMySon.getJSONObject(i).getString("sellerID"); )
+                        //formats entries the ListView containing the orders
+                        if (tableName.equals("orders") && fieldName.equals("sellerID")) {
+                            oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("oID")
+                                    + "] buyer: " + jsonIsMySon.getJSONObject(i).getString("buyerID")
+                                    + " (slotNum: " + jsonIsMySon.getJSONObject(i).getString("slotNum");
+                        }
+                        //formats entries the ListView containing the items sold by seller
+                        if (tableName.equals("thing") && fieldName.equals("tSoldBy")) {
+                            oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("tID")
+                                    + "] " + jsonIsMySon.getJSONObject(i).getString("tName")
+                                    + " (" + jsonIsMySon.getJSONObject(i).getString("tDescription")
+                                    + ") â‚¬" + jsonIsMySon.getJSONObject(i).getString("tPrice");
+                        }
+                        ListViewItemArray.add(oneEntryInTheListView);
                     }
                 }
-            }
-
-        }
-        //For Loop to Rearrange Data To How I want
-        String Temp3 = "";
-        for (int a = 0; a < jsonIsMySon.size(); a++) {
-            String r1 = jsonIsMySon.get(a).replace("\",\"", ",");
-
-            //Rearrange Json data [0]=tDescription,[1]=tID,[2]=tName,[3]=tPicture,[4]=tPrice,[5]=tSoldBy
-            String[] keyValueArray = r1.split(",");
-            jsonIsMySon.set(a, "[" + keyValueArray[1] + "]" + keyValueArray[2] + "(" + keyValueArray[0] + ")€" + keyValueArray[4]);
-            if (a == 0) {
-                Temp3 += jsonIsMySon.get(a);
-            } else {
-                Temp3 += "," + jsonIsMySon.get(a);
-            }
-        }
-
-        //Format for use in listView-Remove KeyNames
-        String r2 = Temp3.replace("\":\"", "");
-        String r3 = r2.replace("\"tDescription", "");
-        String r4 = r3.replace("tID", "");
-        String r5 = r4.replace("tName", "");
-        String r6 = r5.replace("tPrice", "");
-        thingsWeSell.ElementsFromString(r6);
-    }
-
-    public void sortJson4GetThingsSold(String jsonString) {
-
-        // for loop to sort by sellerID with pID
-        String Temp1 = "";
-        //Used https://stackoverflow.com/questions/48449004/java-storing-the-output-of-a-for-loop-into-an-array/48449039 and https://www.w3schools.com/java/java_ref_string.asp
-        List<String> jsonIsMySon = new ArrayList<String>();
-        char start = '{';
-        char finish = '}';
-        int e = 0;
-        for (int i = 0; i < jsonString.length(); i++) {
-            char thisChar = jsonString.charAt(i);
-            if (thisChar == start) {
-                e = i;
-            } else if ((thisChar == finish)) {
-                String Temp2 = jsonString.substring(e, i);
-                if (!(Temp2.contains("]"))) {
-                    if (Temp2.contains("sellerID\":\"")) {
-                        jsonIsMySon.add(Temp2);
-                    }
+                YailList tempData = YailList.makeList(ListViewItemArray);
+                if (tableName.equals("orders") && fieldName.equals("sellerID")) {
+                    thingsSold.Elements(tempData);
+                }
+                if (tableName.equals("thing") && fieldName.equals("tSoldBy")) {
+                    thingsWeSell.Elements(tempData);
                 }
             }
-
+        } catch (JSONException e) {
+            // if an exception occurs, code for it in here
+            GotTextNotifier.ShowMessageDialog("Error 3.353; JSON Exception (check password) ", "Information", "OK");
         }
-        //For Loop to Rearrange Data To How I want
-        String Temp3 = "";
-        for (int a = 0; a < jsonIsMySon.size(); a++) {
-            String r1 = jsonIsMySon.get(a).replace("\",\"", ",");
-
-            //Rearrange Json data [0]=Name,[1]=oID,[2]=sellerID,[3]=slotNum,[4]=tName
-            String[] keyValueArray = r1.split(",");
-            jsonIsMySon.set(a, "[" + keyValueArray[1] + "]" + keyValueArray[4] + " for " + keyValueArray[0] + keyValueArray[3]);
-            if (a == 0) {
-                Temp3 += jsonIsMySon.get(a);
-            } else {
-                Temp3 += "," + jsonIsMySon.get(a);
-            }
+        else {
+            GotTextNotifier.ShowMessageDialog("Error 3.356; Problem connecting with server", "Information", "OK");
         }
-        //Format for use in listView-Remove KeyNames
-        String r2 = Temp3.replace("\":\"", "");
-        String r3 = r2.replace("{\"Name", "");
-        String r4 = r3.replace("oID", "");
-        String r5 = r4.replace("sellerID", "");
-        String r6 = r5.replace(pID, "");
-        String r7 = r6.replace("slotNum", " Slot:");
-        String r8 = r7.replace("tName", "");
-        String r9 = r8.replace("\"", "");
-        thingsSold.ElementsFromString(r9);
     }
 }
