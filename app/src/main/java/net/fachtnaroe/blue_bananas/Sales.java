@@ -2,29 +2,29 @@ package net.fachtnaroe.blue_bananas;
 
 
 import android.content.Intent;
-        import android.graphics.Color;
-        import android.util.Log;
+import android.graphics.Color;
+import android.util.Log;
 
-        import com.google.appinventor.components.runtime.Button;
-        import com.google.appinventor.components.runtime.Component;
-        import com.google.appinventor.components.runtime.Form;
-        import com.google.appinventor.components.runtime.HandlesEventDispatching;
-        import com.google.appinventor.components.runtime.EventDispatcher;
-        import com.google.appinventor.components.runtime.HorizontalArrangement;
-        import com.google.appinventor.components.runtime.Label;
-        import com.google.appinventor.components.runtime.ListView;
-        import com.google.appinventor.components.runtime.VerticalArrangement;
-        import com.google.appinventor.components.runtime.Web;
-        import com.google.appinventor.components.runtime.Notifier;
-        import com.google.appinventor.components.runtime.util.YailList;
+import com.google.appinventor.components.runtime.Button;
+import com.google.appinventor.components.runtime.Component;
+import com.google.appinventor.components.runtime.Form;
+import com.google.appinventor.components.runtime.HandlesEventDispatching;
+import com.google.appinventor.components.runtime.EventDispatcher;
+import com.google.appinventor.components.runtime.HorizontalArrangement;
+import com.google.appinventor.components.runtime.Label;
+import com.google.appinventor.components.runtime.ListView;
+import com.google.appinventor.components.runtime.VerticalArrangement;
+import com.google.appinventor.components.runtime.Web;
+import com.google.appinventor.components.runtime.Notifier;
+import com.google.appinventor.components.runtime.util.YailList;
 
 
-        import org.json.JSONArray;
-        import org.json.JSONException;
-        import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Sales extends Form implements HandlesEventDispatching {
@@ -216,17 +216,17 @@ public class Sales extends Form implements HandlesEventDispatching {
     }
 
     public void deletThis(String selection) {
-        if ((thingsWeSell.Selection().isEmpty())) {
-            GotTextNotifier.ShowAlert("No Item Selected");
-        } else {
-            String tIDForURL = selection.substring(1, 3);
-            webThingDelete.Url( baseURL + URLsesh + "a1b2c3d4" + webThingDeletURL + tIDForURL);
-            webThingDelete.Get();
-            finish();
-            startActivity(getIntent());
+            if ((thingsWeSell.Selection().isEmpty())) {
+                GotTextNotifier.ShowAlert("No Item Selected");
+            }
+            else {
+                int endPoint = selection.indexOf(']');
+                String tIDForURL = selection.substring(1, endPoint);
+                webThingDelete.Url(baseURL+ URLsesh + "a1b2c3d4" + webThingDeletURL + tIDForURL);
+                webThingDelete.Get();
+                GotTextNotifier.ShowAlert("Item " + tIDForURL + " removed");
+            }
         }
-    }
-
     public void removeCompletedOrder(String selection) {
         Log.d("INFO:~~>", "C");
         if ((thingsSold.Selection().isEmpty())) {
