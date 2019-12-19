@@ -113,7 +113,7 @@ public class Sales extends Form implements HandlesEventDispatching {
         empty2.Text("Amount");
         empty2.TextAlignment(Component.ALIGNMENT_NORMAL);
         empty2.FontSize(20);
-        empty2.TextColor(COLOR_WHITE);
+        empty2.TextColor(Component.COLOR_NONE);
         empty2.WidthPercent(60);
 
         btnAddNew = new Button(Horizon2btn);
