@@ -46,7 +46,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             pID="";
 
     protected void $define() {
-        
+
         webLoginConnection = new Web(this);
         notifierOK = new Notifier(this);
         notifierOK.BackgroundColor(Component.COLOR_BLUE);
