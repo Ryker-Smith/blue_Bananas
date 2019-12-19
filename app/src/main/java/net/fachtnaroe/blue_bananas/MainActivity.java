@@ -46,6 +46,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             pID="";
 
     protected void $define() {
+        
         webLoginConnection = new Web(this);
         notifierOK = new Notifier(this);
         notifierOK.BackgroundColor(Component.COLOR_BLUE);
@@ -62,18 +63,23 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         lblScreenTitle.Width(Component.LENGTH_FILL_PARENT);
         lblScreenTitle.FontSize(36);
         lblScreenTitle.TextAlignment(Component.ALIGNMENT_CENTER);
+
         lblSpacing01 = new Label(Vertical2);
         lblSpacing01.Text("");
         lblSpacing01.FontSize(20);
+
         lblUsername = new Label (Vertical2);
         lblUsername.Text("Username");
         lblUsername.Width(Component.LENGTH_FILL_PARENT);
         lblUsername.TextAlignment(Component.ALIGNMENT_CENTER);
+
         txtUsername = new TextBox(Vertical2);
         txtUsername.Text("blueshop");
         txtUsername.Width(Component.LENGTH_FILL_PARENT);
+
         lblSpacing01.Text("");
         lblSpacing01.FontSize(20);
+
         lblPassword = new Label(Vertical2);
         lblPassword.Width(Component.LENGTH_FILL_PARENT);
         lblPassword.Text("Password");
@@ -81,21 +87,27 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         pwdPassword = new PasswordTextBox(Vertical2);
         pwdPassword.Text("tcfetcfe");
         pwdPassword.Width(Component.LENGTH_FILL_PARENT);
+
         hzaBuyerSeller = new HorizontalArrangement(Vertical2);
+
         lblSpacing02 = new Label(this);
         lblSpacing02.Text("");
         lblSpacing02.FontSize(20);
+
         hzaBuyerSeller = new HorizontalArrangement(Vertical2);
         hzaBuyerSeller.WidthPercent(100);
         hzaBuyerSeller.HeightPercent(10);
+
         chkBuyer = new CheckBox(hzaBuyerSeller);
         chkBuyer.Text("Buyer");
         chkBuyer.WidthPercent(LENGTH_FILL_PARENT);
         chkBuyer.Checked(false);
+
         chkSeller = new CheckBox(hzaBuyerSeller);
         chkSeller.Text("Seller");
         chkSeller.WidthPercent(LENGTH_FILL_PARENT);
         chkSeller.Checked(true);
+
         btnLogin = new Button(Vertical2);
         btnLogin.Width(Component.LENGTH_FILL_PARENT);
         btnLogin.Height(100);
@@ -104,6 +116,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         btnLogin.FontSize(35);
         btnLogin.FontBold(true);
         btnLogin.TextAlignment(Component.ALIGNMENT_CENTER);
+
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, formName, "GotText");
         EventDispatcher.registerEventForDelegation(this, "ChangedEvent", "Changed");
